@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware, compose } from 'redux'
-import reducer from './categories/reducers'
+// import reducer from './reducers/'
 import { Provider } from 'react-redux'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -13,7 +13,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const loggerMiddleware = createLogger()
 
 const store = createStore(
-  reducer,
+  // reducer,
   composeEnhancers(
     applyMiddleware(
       loggerMiddleware
