@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import Home from './components/home.component';
 
 class App extends Component {
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className='app'>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          {/* <Route exact path='/404' render={() => (<h1>Page not found</h1>)}/>
+          <Route exact path='/posts/new' component={PostForm} />
+          <Route exact path='/:categoryPath' component={Home} />
+          <Route exact path='/:categoryPath/:postId' component={PostDetail} />
+          <Route exact path='/:categoryPath/:postId/edit' component={PostForm} />
+          <Route exact path='/:categoryPath/:postId/comment/:commentId/edit' component={CommentForm} /> */}
+        </Switch>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default withRouter(connect(
+  null,
+  null,
+)(App))

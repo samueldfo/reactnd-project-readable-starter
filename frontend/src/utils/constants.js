@@ -1,0 +1,8 @@
+
+export const POST_SORT = {
+  LOWEST_SCORE: 0,
+  HIGHEST_SCORE: 1,
+  NEWEST_POSTS: 2,
+  OLDEST_POSTS: 3
+};
+
