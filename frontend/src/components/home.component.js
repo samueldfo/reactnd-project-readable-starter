@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { fetchCategories } from '../actions/categories.action'
 import { fetchPosts } from '../actions/posts.action'
 import { PageHeader } from 'react-bootstrap';
+import { filter } from 'lodash'
 
 class Home extends Component {
 
@@ -19,13 +20,21 @@ class Home extends Component {
     return (
       <div className='container'>
         <PageHeader>Readable</PageHeader>
-        {posts !== null && categories !== null && (<MainTable posts={posts} categories={categories} />)}
+        {posts !== null && categories !== null &&
+          (<MainTable
+            posts={
+              this.props.match.params.categoryPath ?
+                filter(posts, post => post.category === this.props.match.params.categoryPath)
+                : posts}
+            categories={categories}
+          />)}
       </div >
     )
   }
 }
 
 function mapStateToProps({ categories, posts }) {
+
   return {
     categories: categories.items,
     posts: posts.items,

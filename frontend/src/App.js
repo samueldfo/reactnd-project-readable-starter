@@ -10,10 +10,10 @@ class App extends Component {
       <div className='app'>
         <Switch>
           <Route exact path='/' component={Home} />
-          {/* <Route exact path='/404' render={() => (<h1>Page not found</h1>)}/>
-          <Route exact path='/posts/new' component={PostForm} />
+          {/* <Route exact path='/404' render={() => (<h1>Page not found</h1>)}/> */}
+          {/* <Route exact path='/posts/new' component={PostForm} /> */}
           <Route exact path='/:categoryPath' component={Home} />
-          <Route exact path='/:categoryPath/:postId' component={PostDetail} />
+          {/* <Route exact path='/:categoryPath/:postId' component={PostDetail} />
           <Route exact path='/:categoryPath/:postId/edit' component={PostForm} />
           <Route exact path='/:categoryPath/:postId/comment/:commentId/edit' component={CommentForm} /> */}
         </Switch>
