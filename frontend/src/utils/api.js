@@ -21,24 +21,23 @@ export function fetchCategories() {
 export function fetchPosts() {
   return fetch(API_URL + 'posts', { headers })
     .then((res) => res.json())
-  // .then(data => data)
 }
 
+export function fetchPostDetail(postId) {
+  return fetch(API_URL + 'posts/' + postId, { headers })
+    .then((res) => res.json())
+}
+
+export function fetchComments(postId) {
+  return fetch(`${API_URL}posts/${postId}/comments`, { headers })
+    .then((res) => res.json())
+}
 
 // Welcome to the Udacity Readable API!
-
-// GET /categories
-//   USAGE:
-//     Get all of the categories available for the app. List is found in categories.js.
-//     Feel free to extend this list as you desire.
 
 // GET /:category/posts
 //   USAGE:
 //     Get all of the posts for a particular category
-
-// GET /posts
-//   USAGE:
-//     Get all of the posts. Useful for the main page when no category is selected.
 
 // POST /posts
 //   USAGE:
@@ -51,10 +50,6 @@ export function fetchPosts() {
 //     body - String
 //     author - String
 //     category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
-
-// GET /posts/:id
-//   USAGE:
-//     Get the details of a single post
 
 // POST /posts/:id
 //   USAGE:
@@ -73,10 +68,6 @@ export function fetchPosts() {
 //   USAGE:
 //     Sets the deleted flag for a post to 'true'.
 //     Sets the parentDeleted flag for all child comments to 'true'.
-
-// GET /posts/:id/comments
-//   USAGE:
-//     Get all the comments for a single post
 
 // POST /comments
 //   USAGE:

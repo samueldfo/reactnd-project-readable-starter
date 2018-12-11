@@ -30,3 +30,9 @@ code {
   align-items: center;
   justify-content: space-between;
 }
+
+.nav-post-detail {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}

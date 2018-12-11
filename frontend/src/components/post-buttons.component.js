@@ -5,8 +5,9 @@ import { POST_SORT } from '../utils/constants';
 export default function PostButtons({ sortBy, sort }) {
   return (
     <ButtonGroup>
-      <Button bsStyle='primary'>+ New Post</Button>
+      <Button bsStyle='primary' bsSize='small'>+ New Post</Button>
       <DropdownButton
+        bsSize='small'
         title='Sort By'
         onSelect={sort}
       >

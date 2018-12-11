@@ -34,7 +34,6 @@ class Home extends Component {
 }
 
 function mapStateToProps({ categories, posts }) {
-
   return {
     categories: categories.items,
     posts: posts.items,
@@ -55,5 +54,3 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Home))
-
-
