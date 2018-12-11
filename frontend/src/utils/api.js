@@ -12,26 +12,49 @@ const headers = {
   'Authorization': token
 }
 
-export function fetchCategories() {
-  return fetch(API_URL + 'categories', { headers })
-    .then((res) => res.json())
-    .then(data => data.categories)
+export async function fetchCategories() {
+  let categories = await fetch(API_URL + 'categories', { headers })
+  let data = await categories.json()
+  return data.categories
 }
 
-export function fetchPosts() {
-  return fetch(API_URL + 'posts', { headers })
-    .then((res) => res.json())
+export async function fetchPosts() {
+  let posts = await fetch(API_URL + 'posts', { headers })
+  return posts.json()
 }
 
-export function fetchPostDetail(postId) {
-  return fetch(API_URL + 'posts/' + postId, { headers })
-    .then((res) => res.json())
+export async function fetchPostDetail(postId) {
+  let post = await fetch(API_URL + 'posts/' + postId, { headers })
+  return post.json()
 }
 
-export function fetchComments(postId) {
-  return fetch(`${API_URL}posts/${postId}/comments`, { headers })
-    .then((res) => res.json())
+export async function fetchComments(postId) {
+  let comments = await fetch(`${API_URL}posts/${postId}/comments`, { headers })
+  return comments.json()
 }
+
+export async function addComment(comment) {
+  let response = await fetch(`${API_URL}comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(comment),
+  })
+  return response.json()
+}
+
+/**
+ *  Add a comment to a post
+ *  @param {Object} comment
+ *  @param {string} comment.id Any unique ID. As with posts, UUID is probably the best here.
+ *  @param {number} comment.timestamp timestamp. Get this however you want.
+ *  @param {string} comment.body String
+ *  @param {string} comment.author String
+ *  @param {string} comment.parentId Should match a post id in the database.
+ */
+
 
 // Welcome to the Udacity Readable API!
 

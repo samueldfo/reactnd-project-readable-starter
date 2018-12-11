@@ -13,7 +13,7 @@ class Post extends Component {
 
   state = {
     showCommentModal: false,
-    selectedComment: null,
+    selectedComment: {},
   }
 
   componentDidMount() {
@@ -23,7 +23,7 @@ class Post extends Component {
 
   handleShowCommentModal = (comment) => {
     this.setState({
-      selectedComment: comment,
+      selectedComment: comment.id ? comment : {},
       showCommentModal: true
     });
   }
@@ -31,6 +31,11 @@ class Post extends Component {
   handleCloseCommentModal = () => {
     this.setState({ showCommentModal: false });
   }
+
+  // handleSubmitCommentModal = () => {
+  //   this.setState({ showCommentModal: false });
+  //   this.props.fetchComments(this.props.match.params.postId)
+  // }
 
   render() {
 
@@ -89,6 +94,7 @@ class Post extends Component {
         <ComponentAdd
           show={this.state.showCommentModal}
           comment={this.state.selectedComment}
+          post={this.props.post}
           handleClose={this.handleCloseCommentModal}>
         </ComponentAdd>
         {comments.map(comment =>

@@ -19,13 +19,13 @@ export function posts(state = postsInitialState, action) {
   }
 }
 
-const postDetailInitialState = {
+const postInitialState = {
   details: null,
   comments: null,
   loading: true
 }
 
-export function post(state = postDetailInitialState, action) {
+export function post(state = postInitialState, action) {
   const { details, type } = action
   switch (type) {
     case GET_POST_DETAIL:

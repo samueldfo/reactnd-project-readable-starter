@@ -4,7 +4,7 @@ import { Panel, Button, Glyphicon } from 'react-bootstrap';
 
 export default function CommentList({ comment, handleShow }) {
   return (
-    <Panel>
+    <Panel eventKey={comment.id}>
       <Panel.Heading className='nav-post'>
         <p>{comment.author}</p>
         <p>{moment(new Date(comment.timestamp)).calendar()}</p>
