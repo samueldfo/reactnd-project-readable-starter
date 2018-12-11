@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import React from 'react';
 import { Panel, Button, Glyphicon } from 'react-bootstrap';
 
-export default function CommentList({ comment }) {
+export default function CommentList({ comment, handleShow }) {
   return (
     <Panel>
       <Panel.Heading className='nav-post'>
@@ -22,8 +22,8 @@ export default function CommentList({ comment }) {
           </Button>
         </div>
         <div>
-          <Button bsStyle='link' bsSize='xsmall'>
-            <Glyphicon glyph='edit' />
+          <Button bsStyle='link' bsSize='xsmall' onClick={() => handleShow(comment)}>
+            <Glyphicon glyph='pencil' />
           </Button>
           <Button bsStyle='link'>
             <Glyphicon glyph='trash' bsSize='xsmall' />

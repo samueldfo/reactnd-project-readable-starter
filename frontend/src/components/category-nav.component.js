@@ -22,8 +22,8 @@ class CategoryNav extends Component {
         <Nav bsStyle='tabs' activeKey={this.state.active} onSelect={e => this.handleOnSelect(e)}>
           <NavItem
             componentClass={Link} href='/' to='/'
-            eventKey='All Categories'>
-            All Categories
+            eventKey='All'>
+            All
           </NavItem>
           {categories.map(category =>
             <NavItem

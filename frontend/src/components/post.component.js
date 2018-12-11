@@ -12,7 +12,8 @@ import CommentList from './comment.component';
 class Post extends Component {
 
   state = {
-    showCommentModal: false
+    showCommentModal: false,
+    selectedComment: null,
   }
 
   componentDidMount() {
@@ -20,8 +21,11 @@ class Post extends Component {
     this.props.fetchComments(this.props.match.params.postId)
   }
 
-  handleShowCommentModal = () => {
-    this.setState({ showCommentModal: true });
+  handleShowCommentModal = (comment) => {
+    this.setState({
+      selectedComment: comment,
+      showCommentModal: true
+    });
   }
 
   handleCloseCommentModal = () => {
@@ -59,7 +63,7 @@ class Post extends Component {
           </div>
           <div>
             <Button bsStyle='link' >
-              <Glyphicon glyph='edit' />
+              <Glyphicon glyph='pencil' />
             </Button>
             <Button bsStyle='link'>
               <Glyphicon glyph='trash' />
@@ -84,9 +88,14 @@ class Post extends Component {
         <br />
         <ComponentAdd
           show={this.state.showCommentModal}
+          comment={this.state.selectedComment}
           handleClose={this.handleCloseCommentModal}>
         </ComponentAdd>
-        {comments.map(comment => <CommentList comment={comment} />)}
+        {comments.map(comment =>
+          <CommentList
+            comment={comment}
+            handleShow={this.handleShowCommentModal}
+          />)}
       </div >
     )
   }
