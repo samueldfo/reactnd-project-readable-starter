@@ -102,9 +102,6 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: () => dispatch(fetchCategories()),
     fetchPosts: () => dispatch(fetchPosts())
-    // deletePost: (data) => dispatch(fetchDeletePost(data)),
-    // upVotePost: (data) => dispatch(fetchUpVotePost(data)),
-    // downVotePost: (data) => dispatch(fetchDownVotePost(data)),
   }
 }
 

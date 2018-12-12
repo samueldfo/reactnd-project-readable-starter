@@ -77,10 +77,9 @@ class PostDetail extends Component {
 
 }
 
-function mapStateToProps({ post, comments }) {
+function mapStateToProps({ post }) {
   return {
     post: post.details
-    // posts: comments.items,
   }
 }
 
