@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { fetchComments, reloadComments } from '../actions/comments.action';
 import { upVotePost, downVotePost } from '../actions/posts.action';
-import { fetchPostDetail } from '../actions/posts.action';
+import { fetchPostDetail, removePost } from '../actions/posts.action';
 import CommentForm from './comment-form.component';
+import PostForm from './post-form.component';
 import CommentList from './comment-list.component';
 
 class Post extends Component {
@@ -38,6 +39,17 @@ class Post extends Component {
     this.props.reloadComments(this.props.post.id)
   }
 
+  handleShowPostModal = () => {
+    this.setState({
+      showPostModal: true
+    });
+  }
+
+  handleClosePostModal = () => {
+    this.setState({ showPostModal: false });
+    this.props.fetchPostDetail(this.props.match.params.postId)
+  }
+
   handleUpVote = () => {
     this.props.upVotePost(this.props.post.id).then(this.props.fetchPostDetail(this.props.post.id))
   }
@@ -46,10 +58,9 @@ class Post extends Component {
     this.props.downVotePost(this.props.post.id).then(this.props.fetchPostDetail(this.props.post.id))
   }
 
-  // handleSubmitCommentModal = () => {
-  //   this.setState({ showCommentModal: false });
-  //   this.props.fetchComments(this.props.match.params.postId)
-  // }
+  handleRemove = () => {
+    this.props.removePost(this.props.post.id) && this.props.history.goBack()
+  }
 
   render() {
 
@@ -86,10 +97,10 @@ class Post extends Component {
           </div>
           <div>
             <Button bsStyle='link' >
-              <Glyphicon glyph='pencil' />
+              <Glyphicon glyph='pencil' onClick={this.handleShowPostModal} />
             </Button>
             <Button bsStyle='link'>
-              <Glyphicon glyph='trash' />
+              <Glyphicon glyph='trash' onClick={this.handleRemove} />
             </Button>
           </div>
         </div>
@@ -109,18 +120,23 @@ class Post extends Component {
           </div>
         </div>
         <br />
-        <CommentForm
-          show={this.state.showCommentModal}
-          comment={this.state.selectedComment}
-          post={this.props.post}
-          handleClose={this.handleCloseCommentModal}>
-        </CommentForm>
         {comments.map(comment =>
           <CommentList
             comment={comment}
             handleShow={this.handleShowCommentModal}
             reloadComments={this.reloadComments}
           />)}
+          <CommentForm
+          show={this.state.showCommentModal}
+          comment={this.state.selectedComment}
+          post={this.props.post}
+          handleClose={this.handleCloseCommentModal}>
+        </CommentForm>
+        <PostForm
+          show={this.state.showPostModal}
+          post={this.props.post}
+          handleClose={this.handleClosePostModal}>
+        </PostForm>
       </div >
     )
   }
@@ -137,6 +153,7 @@ function mapStateToProps({ post, comments }) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchPostDetail: (postId) => dispatch(fetchPostDetail(postId)),
+    removePost: (postId) => dispatch(removePost(postId)),
     fetchComments: (postId) => dispatch(fetchComments(postId)),
     reloadComments: (postId) => dispatch(reloadComments(postId)),
     upVotePost: (commentId) => dispatch(upVotePost(commentId)),

@@ -116,6 +116,41 @@ export async function downVotePost(postId) {
   return response.json()
 }
 
+export async function addPost(post) {
+  let response = await fetch(`${API_URL}posts`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(post),
+  })
+  return response.json()
+}
+
+export async function removePost(postId) {
+  let response = await fetch(`${API_URL}posts/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    }
+  })
+  return response.json()
+}
+
+export async function editPost(post) {
+  let response = await fetch(`${API_URL}posts/${post.id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(post),
+  })
+  return response.json()
+}
+
 /*
     Welcome to the Udacity Readable API!
 

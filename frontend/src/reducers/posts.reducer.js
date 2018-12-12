@@ -1,4 +1,4 @@
-import { SET_POSTS, GET_POST_DETAIL, UP_VOTE_POST, DOWN_VOTE_POST } from '../actions'
+import { SET_POSTS, GET_POST_DETAIL, UP_VOTE_POST, DOWN_VOTE_POST, ADD_POST, EDIT_POST, REMOVE_POST } from '../actions'
 
 const postsInitialState = {
   items: [],
@@ -31,6 +31,9 @@ export function post(state = postInitialState, action) {
     case GET_POST_DETAIL:
     case UP_VOTE_POST:
     case DOWN_VOTE_POST:
+    case ADD_POST:
+    case EDIT_POST:
+    case REMOVE_POST:
       return {
         ...state,
         details,

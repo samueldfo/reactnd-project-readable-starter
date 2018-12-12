@@ -7,7 +7,7 @@ import { removeComment, upVoteComment, downVoteComment } from '../actions/commen
 
 class CommentList extends Component {
 
-  handleDelete = () => {
+  handleRemove = () => {
     this.props.removeComment(this.props.comment.id).then(() => this.props.reloadComments())
   }
 
@@ -49,7 +49,7 @@ class CommentList extends Component {
               <Glyphicon glyph='pencil' />
             </Button>
             <Button bsStyle='link'>
-              <Glyphicon glyph='trash' bsSize='xsmall' onClick={() => this.handleDelete()} />
+              <Glyphicon glyph='trash' bsSize='xsmall' onClick={() => this.handleRemove()} />
             </Button>
           </div>
         </Panel.Footer>
