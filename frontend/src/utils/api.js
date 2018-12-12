@@ -45,82 +45,167 @@ export async function addComment(comment) {
   return response.json()
 }
 
-/**
- *  Add a comment to a post
- *  @param {Object} comment
- *  @param {string} comment.id Any unique ID. As with posts, UUID is probably the best here.
- *  @param {number} comment.timestamp timestamp. Get this however you want.
- *  @param {string} comment.body String
- *  @param {string} comment.author String
- *  @param {string} comment.parentId Should match a post id in the database.
- */
+export async function removeComment(commentId) {
+  let response = await fetch(`${API_URL}comments/${commentId}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    }
+  })
+  return response.json()
+}
 
+export async function editComment(comment) {
+  let response = await fetch(`${API_URL}comments/${comment.id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(comment),
+  })
+  return response.json()
+}
 
-// Welcome to the Udacity Readable API!
+export async function upVoteComment(commentId) {
+  let response = await fetch(`${API_URL}comments/${commentId}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({option: 'upVote'}),
+  })
+  return response.json()
+}
 
-// GET /:category/posts
-//   USAGE:
-//     Get all of the posts for a particular category
+export async function downVoteComment(commentId) {
+  let response = await fetch(`${API_URL}comments/${commentId}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({option: 'downVote'}),
+  })
+  return response.json()
+}
 
-// POST /posts
-//   USAGE:
-//     Add a new post
+export async function upVotePost(postId) {
+  let response = await fetch(`${API_URL}posts/${postId}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({option: 'upVote'}),
+  })
+  return response.json()
+}
 
-//   PARAMS:
-//     id - UUID should be fine, but any unique id will work
-//     timestamp - timestamp in whatever format you like, you can use Date.now() if you like
-//     title - String
-//     body - String
-//     author - String
-//     category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
+export async function downVotePost(postId) {
+  let response = await fetch(`${API_URL}posts/${postId}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({option: 'downVote'}),
+  })
+  return response.json()
+}
 
-// POST /posts/:id
-//   USAGE:
-//     Used for voting on a post
-//   PARAMS:
-//     option - String: Either "upVote" or "downVote"
+/*
+    Welcome to the Udacity Readable API!
 
-// PUT /posts/:id
-//   USAGE:
-//     Edit the details of an existing post
-//   PARAMS:
-//     title - String
-//     body - String
+    Use an Authorization header to work with your own data:
 
-// DELETE /posts/:id
-//   USAGE:
-//     Sets the deleted flag for a post to 'true'.
-//     Sets the parentDeleted flag for all child comments to 'true'.
+    fetch(url, { headers: { 'Authorization': 'whatever-you-want' }})
 
-// POST /comments
-//   USAGE:
-//     Add a comment to a post
+    The following endpoints are available:
 
-//   PARAMS:
-//     id: Any unique ID. As with posts, UUID is probably the best here.
-//     timestamp: timestamp. Get this however you want.
-//     body: String
-//     author: String
-//     parentId: Should match a post id in the database.
+    GET /categories
+      USAGE:
+        Get all of the categories available for the app. List is found in categories.js.
+        Feel free to extend this list as you desire.
 
-// GET /comments/:id
-//   USAGE:
-//     Get the details for a single comment
+    GET /:category/posts
+      USAGE:
+        Get all of the posts for a particular category
 
-// POST /comments/:id
-//   USAGE:
-//     Used for voting on a comment.
-//   PARAMS:
-//     option - String: Either "upVote" or "downVote"
+    GET /posts
+      USAGE:
+        Get all of the posts. Useful for the main page when no category is selected.
 
-// PUT /comments/:id
-//   USAGE:
-//     Edit the details of an existing comment
+    POST /posts
+      USAGE:
+        Add a new post
 
-//   PARAMS:
-//     timestamp: timestamp. Get this however you want.
-//     body: String
+      PARAMS:
+        id - UUID should be fine, but any unique id will work
+        timestamp - timestamp in whatever format you like, you can use Date.now() if you like
+        title - String
+        body - String
+        author - String
+        category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
 
-// DELETE /comments/:id
-//   USAGE:
-//     Sets a comment's deleted flag to 'true'
+    GET /posts/:id
+      USAGE:
+        Get the details of a single post
+
+    POST /posts/:id
+      USAGE:
+        Used for voting on a post
+      PARAMS:
+        option - String: Either "upVote" or "downVote"
+
+    PUT /posts/:id
+      USAGE:
+        Edit the details of an existing post
+      PARAMS:
+        title - String
+        body - String
+
+    DELETE /posts/:id
+      USAGE:
+        Sets the deleted flag for a post to 'true'.
+        Sets the parentDeleted flag for all child comments to 'true'.
+
+    GET /posts/:id/comments
+      USAGE:
+        Get all the comments for a single post
+
+    POST /comments
+      USAGE:
+        Add a comment to a post
+
+      PARAMS:
+        id: Any unique ID. As with posts, UUID is probably the best here.
+        timestamp: timestamp. Get this however you want.
+        body: String
+        author: String
+        parentId: Should match a post id in the database.
+
+    GET /comments/:id
+      USAGE:
+        Get the details for a single comment
+
+    POST /comments/:id
+      USAGE:
+        Used for voting on a comment.
+      PARAMS:
+        option - String: Either "upVote" or "downVote"
+
+    PUT /comments/:id
+      USAGE:
+        Edit the details of an existing comment
+
+      PARAMS:
+        timestamp: timestamp. Get this however you want.
+        body: String
+
+    DELETE /comments/:id
+      USAGE:
+        Sets a comment's deleted flag to 'true'
+*/

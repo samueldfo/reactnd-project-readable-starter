@@ -1,4 +1,4 @@
-import { GET_COMMENTS, ADD_COMMENT, RELOAD_COMMENTS } from '../actions';
+import { GET_COMMENTS, ADD_COMMENT, RELOAD_COMMENTS, EDIT_COMMENT, REMOVE_COMMENT, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT } from '../actions';
 
 const commentsInitialState = {
   items: null,
@@ -28,7 +28,11 @@ const commentInitialState = {
 export function comment(state = commentInitialState, action) {
   const { type } = action
   switch (type) {
+    case UP_VOTE_COMMENT:
+    case DOWN_VOTE_COMMENT:
     case ADD_COMMENT:
+    case EDIT_COMMENT:
+    case REMOVE_COMMENT:
       return {
         ...state,
         loading: false,

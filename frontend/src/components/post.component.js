@@ -1,13 +1,14 @@
 import { get, orderBy } from 'lodash';
 import * as moment from 'moment';
 import React, { Component } from 'react';
-import { Button, Glyphicon, Label } from 'react-bootstrap';
+import { Button, Glyphicon, Label, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { fetchComments } from '../actions/comments.action';
+import { fetchComments, reloadComments } from '../actions/comments.action';
+import { upVotePost, downVotePost } from '../actions/posts.action';
 import { fetchPostDetail } from '../actions/posts.action';
-import ComponentAdd from './comment-add.component';
-import CommentList from './comment.component';
+import CommentForm from './comment-form.component';
+import CommentList from './comment-list.component';
 
 class Post extends Component {
 
@@ -30,6 +31,19 @@ class Post extends Component {
 
   handleCloseCommentModal = () => {
     this.setState({ showCommentModal: false });
+    this.reloadComments()
+  }
+
+  reloadComments = () => {
+    this.props.reloadComments(this.props.post.id)
+  }
+
+  handleUpVote = () => {
+    this.props.upVotePost(this.props.post.id).then(this.props.fetchPostDetail(this.props.post.id))
+  }
+
+  handleDownVote = () => {
+    this.props.downVotePost(this.props.post.id).then(this.props.fetchPostDetail(this.props.post.id))
   }
 
   // handleSubmitCommentModal = () => {
@@ -41,6 +55,7 @@ class Post extends Component {
 
     let { post, comments } = this.props
 
+    comments = comments.filter(comment => !comment.deleted)
     comments = orderBy(comments, 'voteScore', 'desc')
 
     return (
@@ -59,12 +74,15 @@ class Post extends Component {
         </div>
         <div className='nav-post'>
           <div>
-            <Button bsSize='xsmall'>
-              <Glyphicon glyph='thumbs-up' /> {get(post, 'voteScore') > 0 ? get(post, 'voteScore') : 0}
-            </Button>
-            <Button bsSize='xsmall'>
-              <Glyphicon glyph='thumbs-down' /> {get(post, 'voteScore') < 0 ? get(post, 'voteScore') : 0}
-            </Button>
+            <ButtonGroup>
+              <Button bsSize='xsmall' onClick={() => this.handleUpVote(post)} >
+                <Glyphicon glyph='thumbs-up' />
+              </Button>
+              <Button active bsSize='xsmall'>{get(post, 'voteScore')}</Button>
+              <Button bsSize='xsmall' onClick={() => this.handleDownVote(post)} >
+                <Glyphicon glyph='thumbs-down' />
+              </Button>
+            </ButtonGroup>
           </div>
           <div>
             <Button bsStyle='link' >
@@ -91,16 +109,17 @@ class Post extends Component {
           </div>
         </div>
         <br />
-        <ComponentAdd
+        <CommentForm
           show={this.state.showCommentModal}
           comment={this.state.selectedComment}
           post={this.props.post}
           handleClose={this.handleCloseCommentModal}>
-        </ComponentAdd>
+        </CommentForm>
         {comments.map(comment =>
           <CommentList
             comment={comment}
             handleShow={this.handleShowCommentModal}
+            reloadComments={this.reloadComments}
           />)}
       </div >
     )
@@ -119,6 +138,9 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchPostDetail: (postId) => dispatch(fetchPostDetail(postId)),
     fetchComments: (postId) => dispatch(fetchComments(postId)),
+    reloadComments: (postId) => dispatch(reloadComments(postId)),
+    upVotePost: (commentId) => dispatch(upVotePost(commentId)),
+    downVotePost: (commentId) => dispatch(downVotePost(commentId)),
   }
 }
 

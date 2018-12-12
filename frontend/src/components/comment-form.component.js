@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { addComment, reloadComments } from '../actions/comments.action';
+import { addComment, editComment } from '../actions/comments.action';
 import FieldGroup from './field-group.component';
+import { isEmpty } from 'lodash'
 
-class ComponentAdd extends Component {
+class CommentForm extends Component {
 
   state = {
-    editMode: false,
-    // editingComment: {},
     author: '',
     body: '',
   }
@@ -18,15 +17,13 @@ class ComponentAdd extends Component {
     const comment = {
       ...this.props.comment,
       parentId: this.props.post.id,
-      body: this.state.body,
-      author: this.state.author,
+      body: isEmpty(this.state.body) ? this.props.comment.body : this.state.body,
+      author: isEmpty(this.state.author) ? this.props.comment.author : this.state.author,
     }
-    this.props.addComment(comment)
-    this.props.reloadComments(this.props.post.id)
+    comment.id ? this.props.editComment(comment) : this.props.addComment(comment)
     this.clearForm()
     this.props.handleClose()
   }
-
 
   handleClose = () => {
     this.clearForm()
@@ -42,25 +39,27 @@ class ComponentAdd extends Component {
 
   handleBodyChange = (e) => {
     this.setState({
+      ...this.state,
       body: e.target.value
     })
   }
 
   handleAuthorChange = (e) => {
     this.setState({
+      ...this.state,
       author: e.target.value
     })
   }
 
   render() {
 
-    let { show, handleClose } = this.props
+    let { show, comment, handleClose } = this.props
 
     return (
       <div>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Add your comment</Modal.Title>
+            <Modal.Title>{comment.id ? 'Edit your comment' : 'Add your comment'}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form >
@@ -71,7 +70,7 @@ class ComponentAdd extends Component {
                 componentClass='textarea'
                 style={{ resize: 'vertical' }}
                 rows='10'
-                value={this.state.body}
+                defaultValue={comment.id ? comment.body : this.state.body}
                 onChange={this.handleBodyChange}
                 placeholder='Enter comment'
               />
@@ -79,10 +78,9 @@ class ComponentAdd extends Component {
                 id='author'
                 type='input'
                 label='Author'
-                value={this.state.author}
+                defaultValue={comment.id ? comment.author : this.state.author}
                 onChange={this.handleAuthorChange}
                 placeholder='Enter author'
-              // disabled={this.state.editMode}
               />
             </form >
           </Modal.Body>
@@ -99,11 +97,11 @@ class ComponentAdd extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     addComment: (comment) => dispatch(addComment(comment)),
-    reloadComments: (postId) => dispatch(reloadComments(postId))
+    editComment: (comment) => dispatch(editComment(comment)),
   }
 }
 
 export default withRouter(connect(
   null,
   mapDispatchToProps,
-)(ComponentAdd))
+)(CommentForm))
