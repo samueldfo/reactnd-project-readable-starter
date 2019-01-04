@@ -1,41 +1,56 @@
-import { GET_COMMENTS, ADD_COMMENT, RELOAD_COMMENTS, EDIT_COMMENT, REMOVE_COMMENT, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT } from '../actions';
+import { GET_COMMENTS, ADD_COMMENT, EDIT_COMMENT, REMOVE_COMMENT, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT } from '../actions';
 
-const commentsInitialState = {
+const commentInitialState = {
   items: null,
-  loading: true
 }
 
-export function comments(state = commentsInitialState, action) {
-  const { comments, type } = action
+export function comments(state = commentInitialState, action) {
+  const { type, comment, comments } = action
   switch (type) {
-    case RELOAD_COMMENTS:
+    case ADD_COMMENT:
+      return {
+        ...state,
+        items: [...state.items, comment]
+      }
+    case EDIT_COMMENT:
+      return {
+        ...state,
+        items: state.items.map(item => {
+          if (item.id === comment.id) {
+            item = comment
+          }
+          return item;
+        }),
+      }
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        items: state.items.filter(item => item.id !== comment.id)
+      }
+    case UP_VOTE_COMMENT:
+      return {
+        ...state,
+        items: state.items.map(item => {
+          if (item.id === comment.id) {
+            item.voteScore = comment.voteScore
+          }
+          return item;
+        }),
+      }
+    case DOWN_VOTE_COMMENT:
+      return {
+        ...state,
+        items: state.items.map(item => {
+          if (item.id === comment.id) {
+            item.voteScore = comment.voteScore
+          }
+          return item;
+        }),
+      }
     case GET_COMMENTS:
       return {
         ...state,
         items: comments,
-        loading: false,
-      }
-    default:
-      return state
-  }
-}
-
-const commentInitialState = {
-  items: null,
-  loading: true
-}
-
-export function comment(state = commentInitialState, action) {
-  const { type } = action
-  switch (type) {
-    case UP_VOTE_COMMENT:
-    case DOWN_VOTE_COMMENT:
-    case ADD_COMMENT:
-    case EDIT_COMMENT:
-    case REMOVE_COMMENT:
-      return {
-        ...state,
-        loading: false,
       }
     default:
       return state

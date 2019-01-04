@@ -9,8 +9,6 @@ export const GET_POST_DETAIL = 'GET_POST_DETAIL'
 export const UP_VOTE_POST = 'UP_VOTE_POST'
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST'
 
-
-
 export function fetchPosts() {
   return async dispatch => {
     let posts = await ReadableAPI.fetchPosts();
@@ -41,76 +39,81 @@ function getPostDetail(details) {
 
 export function addPost(data) {
   return async dispatch => {
-    await ReadableAPI.addPost(
+    let post = await ReadableAPI.addPost(
       {
         ...data,
         id: uuidv4(),
         timestamp: Date.now(),
       }
     );
-    dispatch(addPostAction());
+    dispatch(addPostAction(post));
   }
 }
 
-function addPostAction() {
+function addPostAction(post) {
   return {
     type: ADD_POST,
+    post
   };
 }
 
 export function editPost(data) {
   return async dispatch => {
-    await ReadableAPI.editPost(
+    let post = await ReadableAPI.editPost(
       {
         ...data,
         timestamp: Date.now(),
       }
     );
-    dispatch(editPostAction());
+    dispatch(editPostAction(post));
   }
 }
 
-function editPostAction() {
+function editPostAction(post) {
   return {
     type: EDIT_POST,
+    post
   };
 }
 
 export function removePost(postId) {
   return async dispatch => {
-    await ReadableAPI.removePost(postId)
-    dispatch(removePostAction());
+    let post = await ReadableAPI.removePost(postId)
+    dispatch(removePostAction(post));
   }
 }
 
-function removePostAction() {
+function removePostAction(post) {
   return {
     type: REMOVE_POST,
+    post
   };
 }
 
 export function upVotePost(postId) {
   return async dispatch => {
-    await ReadableAPI.upVotePost(postId)
-    dispatch(upVotePostAction());
+    let post = await ReadableAPI.upVotePost(postId)
+    dispatch(upVotePostAction(post));
   }
 }
 
-function upVotePostAction() {
+function upVotePostAction(post) {
   return {
     type: UP_VOTE_POST,
+    post,
   };
 }
 
 export function downVotePost(postId) {
   return async dispatch => {
-    await ReadableAPI.downVotePost(postId)
-    dispatch(downVotePostAction());
+    let post = await ReadableAPI.downVotePost(postId)
+    dispatch(downVotePostAction(post));
   }
 }
 
-function downVotePostAction() {
+function downVotePostAction(post) {
   return {
     type: DOWN_VOTE_POST,
+    post,
   };
 }

@@ -2,7 +2,6 @@ import { SET_CATEGORIES, } from '../actions'
 
 const initialState = {
   items: [],
-  loading: true
 }
 
 export function categories(state = initialState, action) {
@@ -12,7 +11,6 @@ export function categories(state = initialState, action) {
       return {
         ...state,
         items: categories,
-        loading: false,
       }
     default:
       return state

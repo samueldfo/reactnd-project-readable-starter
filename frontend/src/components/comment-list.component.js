@@ -3,25 +3,12 @@ import * as moment from 'moment';
 import { Panel, Button, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { removeComment, upVoteComment, downVoteComment } from '../actions/comments.action';
 
 class CommentList extends Component {
 
-  handleRemove = () => {
-    this.props.removeComment(this.props.comment.id).then(() => this.props.reloadComments())
-  }
-
-  handleUpVote = () => {
-    this.props.upVoteComment(this.props.comment.id).then(() => this.props.reloadComments())
-  }
-
-  handleDownVote = () => {
-    this.props.downVoteComment(this.props.comment.id).then(() => this.props.reloadComments())
-  }
-
   render() {
 
-    let { comment, handleShow } = this.props
+    let { comment, handleShow, handleUpVote, handleDownVote, handleRemove } = this.props
 
     return (
       <Panel eventKey={comment.id}>
@@ -35,11 +22,11 @@ class CommentList extends Component {
         <Panel.Footer className='nav-post'>
           <div>
             <ButtonGroup>
-              <Button bsSize='xsmall' onClick={() => this.handleUpVote(comment)} >
+              <Button bsSize='xsmall' onClick={() => handleUpVote(comment.id)} >
                 <Glyphicon glyph='thumbs-up' />
               </Button>
               <Button active bsSize='xsmall'>{comment.voteScore}</Button>
-              <Button bsSize='xsmall' onClick={() => this.handleDownVote(comment)} >
+              <Button bsSize='xsmall' onClick={() => handleDownVote(comment.id)} >
                 <Glyphicon glyph='thumbs-down' />
               </Button>
             </ButtonGroup>
@@ -49,7 +36,7 @@ class CommentList extends Component {
               <Glyphicon glyph='pencil' />
             </Button>
             <Button bsStyle='link'>
-              <Glyphicon glyph='trash' bsSize='xsmall' onClick={() => this.handleRemove()} />
+              <Glyphicon glyph='trash' bsSize='xsmall' onClick={() => handleRemove(comment.id)} />
             </Button>
           </div>
         </Panel.Footer>
@@ -58,16 +45,8 @@ class CommentList extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    removeComment: (commentId) => dispatch(removeComment(commentId)),
-    upVoteComment: (commentId) => dispatch(upVoteComment(commentId)),
-    downVoteComment: (commentId) => dispatch(downVoteComment(commentId)),
-  }
-}
-
 export default withRouter(connect(
   null,
-  mapDispatchToProps,
+  null,
 )(CommentList))
 

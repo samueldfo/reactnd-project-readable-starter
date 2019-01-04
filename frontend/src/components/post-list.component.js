@@ -3,7 +3,7 @@ import React from 'react';
 import { Table, Button, Glyphicon } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
-export default function PostList({ posts }) {
+export default function PostList({ posts, handleRemove, handleEdit }) {
   return (
     <Table striped hover>
       <thead>
@@ -28,8 +28,8 @@ export default function PostList({ posts }) {
             <td>{moment(new Date(post.timestamp)).calendar()}</td>
             <td>
               <Button componentClass={Link} href='/' to={`/posts/${post.id}`} bsStyle='link'><Glyphicon glyph='eye-open' /></Button>
-              <Button componentClass={Link} href='/' to={`/posts/${post.id}`} bsStyle='link'><Glyphicon glyph='pencil' /></Button>
-              <Button componentClass={Link} href='/' to={`/posts/${post.id}`} bsStyle='link'><Glyphicon glyph='trash' /></Button>
+              <Button bsStyle='link' onClick={() => handleEdit(post)}><Glyphicon glyph='pencil' /></Button>
+              <Button bsStyle='link' onClick={() => handleRemove(post.id)}><Glyphicon glyph='trash' /></Button>
             </td>
           </tr>
         )}

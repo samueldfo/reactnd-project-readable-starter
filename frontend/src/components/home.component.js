@@ -10,6 +10,7 @@ import { POST_SORT } from '../utils/constants';
 import CategoryNav from './category-nav.component';
 import PostList from './post-list.component';
 import PostForm from './post-form.component';
+import { removePost } from '../actions/posts.action';
 
 class Home extends Component {
 
@@ -31,13 +32,23 @@ class Home extends Component {
     this.setState({ showPostModal: true });
   }
 
+  handleRemovePost = (id) => {
+    this.props.removePost(id)
+  }
+
+  handleEditPost = (post) => {
+    this.setState({
+      post: post,
+      showPostModal: true
+    });
+  }
+
   handleClosePostModal = () => {
     this.setState({ showPostModal: false });
-    this.props.fetchPosts()
   }
 
   render() {
-    let { categories, posts } = this.props
+    let { categories, posts, post } = this.props
 
     switch (this.state.sortBy) {
       case POST_SORT.HIGHEST_SCORE:
@@ -77,13 +88,14 @@ class Home extends Component {
                 </DropdownButton>
               </ButtonGroup>
             </div>
-            <PostList posts={this.props.match.params.categoryPath ?
-              filter(posts, post => post.category === this.props.match.params.categoryPath)
-              : posts} />
+            <PostList
+              posts={this.props.match.params.categoryPath ? filter(posts, post => post.category === this.props.match.params.categoryPath) : posts}
+              handleRemove={this.handleRemovePost}
+              handleEdit={this.handleEditPost} />
           </div >)}
         <PostForm
           show={this.state.showPostModal}
-          post={this.props.post}
+          post={this.state.post}
           handleClose={this.handleClosePostModal}>
         </PostForm>
       </div >
@@ -101,7 +113,8 @@ function mapStateToProps({ categories, posts }) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: () => dispatch(fetchCategories()),
-    fetchPosts: () => dispatch(fetchPosts())
+    fetchPosts: () => dispatch(fetchPosts()),
+    removePost: (id) => dispatch(removePost(id)),
   }
 }
 

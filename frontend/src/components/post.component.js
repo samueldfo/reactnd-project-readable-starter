@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import { Button, Glyphicon, Label, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { fetchComments, reloadComments } from '../actions/comments.action';
+import { fetchComments } from '../actions/comments.action';
 import { upVotePost, downVotePost } from '../actions/posts.action';
 import { fetchPostDetail, removePost } from '../actions/posts.action';
 import CommentForm from './comment-form.component';
 import PostForm from './post-form.component';
 import CommentList from './comment-list.component';
+import { removeComment, upVoteComment, downVoteComment } from '../actions/comments.action';
 
 class Post extends Component {
 
@@ -32,11 +33,18 @@ class Post extends Component {
 
   handleCloseCommentModal = () => {
     this.setState({ showCommentModal: false });
-    this.reloadComments()
   }
 
-  reloadComments = () => {
-    this.props.reloadComments(this.props.post.id)
+  handleUpVoteComment = (id) => {
+    this.props.upVoteComment(id)
+  }
+
+  handleDownVoteComment = (id) => {
+    this.props.downVoteComment(id)
+  }
+
+  handleRemoveComment = (id) => {
+    this.props.removeComment(id)
   }
 
   handleShowPostModal = () => {
@@ -47,15 +55,14 @@ class Post extends Component {
 
   handleClosePostModal = () => {
     this.setState({ showPostModal: false });
-    this.props.fetchPostDetail(this.props.match.params.postId)
   }
 
   handleUpVote = () => {
-    this.props.upVotePost(this.props.post.id).then(this.props.fetchPostDetail(this.props.post.id))
+    this.props.upVotePost(this.props.post.id)
   }
 
   handleDownVote = () => {
-    this.props.downVotePost(this.props.post.id).then(this.props.fetchPostDetail(this.props.post.id))
+    this.props.downVotePost(this.props.post.id)
   }
 
   handleRemove = () => {
@@ -124,7 +131,9 @@ class Post extends Component {
           <CommentList
             comment={comment}
             handleShow={this.handleShowCommentModal}
-            reloadComments={this.reloadComments}
+            handleRemove={this.handleRemoveComment}
+            handleUpVote={this.handleUpVoteComment}
+            handleDownVote={this.handleDownVoteComment}
           />)}
           <CommentForm
           show={this.state.showCommentModal}
@@ -155,9 +164,11 @@ function mapDispatchToProps(dispatch) {
     fetchPostDetail: (postId) => dispatch(fetchPostDetail(postId)),
     removePost: (postId) => dispatch(removePost(postId)),
     fetchComments: (postId) => dispatch(fetchComments(postId)),
-    reloadComments: (postId) => dispatch(reloadComments(postId)),
     upVotePost: (commentId) => dispatch(upVotePost(commentId)),
     downVotePost: (commentId) => dispatch(downVotePost(commentId)),
+    removeComment: (commentId) => dispatch(removeComment(commentId)),
+    upVoteComment: (commentId) => dispatch(upVoteComment(commentId)),
+    downVoteComment: (commentId) => dispatch(downVoteComment(commentId)),
   }
 }
 
