@@ -11,17 +11,30 @@ import CommentForm from './comment-form.component';
 import PostForm from './post-form.component';
 import CommentList from './comment-list.component';
 import { removeComment, upVoteComment, downVoteComment } from '../actions/comments.action';
+import Error404 from './error-404.component';
 
 class Post extends Component {
 
   state = {
     showCommentModal: false,
     selectedComment: {},
+    isLoading: false,
   }
 
   componentDidMount() {
     this.props.fetchPostDetail(this.props.match.params.postId)
     this.props.fetchComments(this.props.match.params.postId)
+    this.setLoading(true)
+  }
+
+  componentWillReceiveProps(props) {
+    this.setLoading(false)
+  }
+
+  setLoading(isLoading) {
+    this.setState({
+      isLoading: isLoading
+    })
   }
 
   handleShowCommentModal = (comment) => {
@@ -77,76 +90,77 @@ class Post extends Component {
     comments = orderBy(comments, 'voteScore', 'desc')
 
     return (
-      <div className='container' >
-        <div className='nav-post-detail'>
-          <div>
-            <h1>
-              {get(post, 'title')} <small> by {get(post, 'author')}</small>
-            </h1>
-          </div >
-          <div>
-            <p align='right' >
-              <font size='2'>created at {post ? moment(new Date(post.timestamp)).calendar() : null} </font>
-            </p>
+      get(post, 'id') === undefined && !this.state.isLoading ? <Error404 /> :
+        <div className='container' >
+          <div className='nav-post-detail'>
+            <div>
+              <h1>
+                {get(post, 'title')} <small> by {get(post, 'author')}</small>
+              </h1>
+            </div >
+            <div>
+              <p align='right' >
+                <font size='2'>created at {post ? moment(new Date(post.timestamp)).calendar() : null} </font>
+              </p>
+            </div>
           </div>
-        </div>
-        <div className='nav-post'>
-          <div>
-            <ButtonGroup>
-              <Button bsSize='xsmall' onClick={() => this.handleUpVote(post)} >
-                <Glyphicon glyph='thumbs-up' />
+          <div className='nav-post'>
+            <div>
+              <ButtonGroup>
+                <Button bsSize='xsmall' onClick={() => this.handleUpVote(post)} >
+                  <Glyphicon glyph='thumbs-up' />
+                </Button>
+                <Button active bsSize='xsmall'>{get(post, 'voteScore')}</Button>
+                <Button bsSize='xsmall' onClick={() => this.handleDownVote(post)} >
+                  <Glyphicon glyph='thumbs-down' />
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div>
+              <Button bsStyle='link' >
+                <Glyphicon glyph='pencil' onClick={this.handleShowPostModal} />
               </Button>
-              <Button active bsSize='xsmall'>{get(post, 'voteScore')}</Button>
-              <Button bsSize='xsmall' onClick={() => this.handleDownVote(post)} >
-                <Glyphicon glyph='thumbs-down' />
+              <Button bsStyle='link'>
+                <Glyphicon glyph='trash' onClick={this.handleRemove} />
               </Button>
-            </ButtonGroup>
+            </div>
           </div>
-          <div>
-            <Button bsStyle='link' >
-              <Glyphicon glyph='pencil' onClick={this.handleShowPostModal} />
-            </Button>
-            <Button bsStyle='link'>
-              <Glyphicon glyph='trash' onClick={this.handleRemove} />
-            </Button>
+          <div className='nav-post'>
+            <h5>
+              <Label>{get(post, 'category')}</Label>
+            </h5>
           </div>
-        </div>
-        <div className='nav-post'>
-          <h5>
-            <Label>{get(post, 'category')}</Label>
-          </h5>
-        </div>
-        <p>
-          {get(post, 'body')}
-        </p>
-        <hr />
-        <div className='nav-post'>
-          <h4>Comments</h4>
-          <div>
-            <Button bsStyle='primary' bsSize='small' onClick={this.handleShowCommentModal}>+ New Comment</Button>
+          <p>
+            {get(post, 'body')}
+          </p>
+          <hr />
+          <div className='nav-post'>
+            <h4>Comments</h4>
+            <div>
+              <Button bsStyle='primary' bsSize='small' onClick={this.handleShowCommentModal}>+ New Comment</Button>
+            </div>
           </div>
-        </div>
-        <br />
-        {comments.map(comment =>
-          <CommentList
-            comment={comment}
-            handleShow={this.handleShowCommentModal}
-            handleRemove={this.handleRemoveComment}
-            handleUpVote={this.handleUpVoteComment}
-            handleDownVote={this.handleDownVoteComment}
-          />)}
+          <br />
+          {comments.map(comment =>
+            <CommentList
+              comment={comment}
+              handleShow={this.handleShowCommentModal}
+              handleRemove={this.handleRemoveComment}
+              handleUpVote={this.handleUpVoteComment}
+              handleDownVote={this.handleDownVoteComment}
+            />)}
           <CommentForm
-          show={this.state.showCommentModal}
-          comment={this.state.selectedComment}
-          post={this.props.post}
-          handleClose={this.handleCloseCommentModal}>
-        </CommentForm>
-        <PostForm
-          show={this.state.showPostModal}
-          post={this.props.post}
-          handleClose={this.handleClosePostModal}>
-        </PostForm>
-      </div >
+            show={this.state.showCommentModal}
+            comment={this.state.selectedComment}
+            post={this.props.post}
+            handleClose={this.handleCloseCommentModal}>
+          </CommentForm>
+          <PostForm
+            show={this.state.showPostModal}
+            post={this.props.post}
+            handleClose={this.handleClosePostModal}>
+          </PostForm>
+        </div >
     )
   }
 

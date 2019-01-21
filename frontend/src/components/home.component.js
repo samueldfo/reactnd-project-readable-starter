@@ -48,7 +48,7 @@ class Home extends Component {
   }
 
   render() {
-    let { categories, posts, post } = this.props
+    let { categories, posts } = this.props
 
     switch (this.state.sortBy) {
       case POST_SORT.HIGHEST_SCORE:
