@@ -18,23 +18,11 @@ class Post extends Component {
   state = {
     showCommentModal: false,
     selectedComment: {},
-    isLoading: false,
   }
 
   componentDidMount() {
     this.props.fetchPostDetail(this.props.match.params.postId)
     this.props.fetchComments(this.props.match.params.postId)
-    this.setLoading(true)
-  }
-
-  componentWillReceiveProps(props) {
-    this.setLoading(false)
-  }
-
-  setLoading(isLoading) {
-    this.setState({
-      isLoading: isLoading
-    })
   }
 
   handleShowCommentModal = (comment) => {
@@ -90,7 +78,7 @@ class Post extends Component {
     comments = orderBy(comments, 'voteScore', 'desc')
 
     return (
-      get(post, 'id') === undefined && !this.state.isLoading ? <Error404 /> :
+      get(post, 'id') === undefined ? <Error404 /> :
         <div className='container' >
           <div className='nav-post-detail'>
             <div>
