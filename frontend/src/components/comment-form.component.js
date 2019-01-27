@@ -11,18 +11,29 @@ class CommentForm extends Component {
   state = {
     author: '',
     body: '',
+    aError: false,
+    bError: false,
   }
 
   handleSubmit = () => {
-    const comment = {
-      ...this.props.comment,
-      parentId: this.props.post.id,
-      body: isEmpty(this.state.body) ? this.props.comment.body : this.state.body,
-      author: isEmpty(this.state.author) ? this.props.comment.author : this.state.author,
+    if (isEmpty(this.state.author) || isEmpty(this.state.body)) {
+      this.setState({
+        ...this.state,
+        aError: isEmpty(this.state.author),
+        bError: isEmpty(this.state.body),
+      })
     }
-    comment.id ? this.props.editComment(comment) : this.props.addComment(comment)
-    this.clearForm()
-    this.props.handleClose()
+    if (!isEmpty(this.state.author) && !isEmpty(this.state.body)) {
+      const comment = {
+        ...this.props.comment,
+        parentId: this.props.post.id,
+        body: isEmpty(this.state.body) ? this.props.comment.body : this.state.body,
+        author: isEmpty(this.state.author) ? this.props.comment.author : this.state.author,
+      }
+      comment.id ? this.props.editComment(comment) : this.props.addComment(comment)
+      this.clearForm()
+      this.props.handleClose()
+    }
   }
 
   handleClose = () => {
@@ -40,14 +51,17 @@ class CommentForm extends Component {
   handleBodyChange = (e) => {
     this.setState({
       ...this.state,
-      body: e.target.value
+      body: e.target.value,
+      bError: false,
+
     })
   }
 
   handleAuthorChange = (e) => {
     this.setState({
       ...this.state,
-      author: e.target.value
+      author: e.target.value,
+      aError: false,
     })
   }
 
@@ -67,6 +81,7 @@ class CommentForm extends Component {
                 id='body'
                 type='input'
                 label='Comment'
+                vState={this.state.bError ? 'error' : null}
                 componentClass='textarea'
                 style={{ resize: 'vertical' }}
                 rows='10'
@@ -78,6 +93,7 @@ class CommentForm extends Component {
                 id='author'
                 type='input'
                 label='Author'
+                vState={this.state.aError ? 'error' : null}
                 defaultValue={comment.id ? comment.author : this.state.author}
                 onChange={this.handleAuthorChange}
                 placeholder='Enter author'

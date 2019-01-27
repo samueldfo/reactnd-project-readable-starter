@@ -13,19 +13,34 @@ class PostForm extends Component {
     body: '',
     category: '',
     title: '',
+    aError: false,
+    bError: false,
+    tError: false,
+    cError: false,
   }
 
   handleSubmit = () => {
-    const post = {
-      ...this.props.post,
-      body: isEmpty(this.state.body) ? this.props.post.body : this.state.body,
-      author: isEmpty(this.state.author) ? this.props.post.author : this.state.author,
-      category: isEmpty(this.state.category) ? this.props.post.category : this.state.category,
-      title: isEmpty(this.state.title) ? this.props.post.title : this.state.title,
+    if (isEmpty(this.state.author) || isEmpty(this.state.body) || isEmpty(this.state.category) || isEmpty(this.state.title)) {
+      this.setState({
+        ...this.state,
+        aError: isEmpty(this.state.author),
+        bError: isEmpty(this.state.body),
+        cError: isEmpty(this.state.category),
+        tError: isEmpty(this.state.title),
+      })
     }
-    get(post, 'id') ? this.props.editPost(post) : this.props.addPost(post)
-    this.clearForm()
-    this.props.handleClose()
+    if (!isEmpty(this.state.author) && !isEmpty(this.state.body) && !isEmpty(this.state.category) && !isEmpty(this.state.title)) {
+      const post = {
+        ...this.props.post,
+        body: isEmpty(this.state.body) ? this.props.post.body : this.state.body,
+        author: isEmpty(this.state.author) ? this.props.post.author : this.state.author,
+        category: isEmpty(this.state.category) ? this.props.post.category : this.state.category,
+        title: isEmpty(this.state.title) ? this.props.post.title : this.state.title,
+      }
+      get(post, 'id') ? this.props.editPost(post) : this.props.addPost(post)
+      this.clearForm()
+      this.props.handleClose()
+    }
   }
 
   handleClose = () => {
@@ -42,10 +57,10 @@ class PostForm extends Component {
     })
   }
 
-  handleBodyChange = (e) => { this.setState({ ...this.state, body: e.target.value }) }
-  handleAuthorChange = (e) => { this.setState({ ...this.state, author: e.target.value }) }
-  handleCategoryChange = (e) => { this.setState({ ...this.state, category: e.target.value }) }
-  handleTitleChange = (e) => { this.setState({ ...this.state, title: e.target.value }) }
+  handleBodyChange = (e) => { this.setState({ ...this.state, body: e.target.value, bError: false }) }
+  handleAuthorChange = (e) => { this.setState({ ...this.state, author: e.target.value, aError: false }) }
+  handleCategoryChange = (e) => { this.setState({ ...this.state, category: e.target.value, cError: false }) }
+  handleTitleChange = (e) => { this.setState({ ...this.state, title: e.target.value, tError: false }) }
 
   render() {
 
@@ -62,6 +77,7 @@ class PostForm extends Component {
               <FieldGroup
                 id='title'
                 type='input'
+                vState={this.state.tError ? 'error' : null}
                 label='Title'
                 defaultValue={get(post, 'id') ? post.title : this.state.title}
                 onChange={this.handleTitleChange}
@@ -70,6 +86,7 @@ class PostForm extends Component {
               <FieldGroup
                 id='category'
                 type='input'
+                vState={this.state.cError ? 'error' : null}
                 label='Category'
                 defaultValue={get(post, 'id') ? post.category : this.state.category}
                 onChange={this.handleCategoryChange}
@@ -78,6 +95,7 @@ class PostForm extends Component {
               <FieldGroup
                 id='body'
                 type='input'
+                vState={this.state.bError ? 'error' : null}
                 label='Post'
                 componentClass='textarea'
                 style={{ resize: 'vertical' }}
@@ -89,6 +107,7 @@ class PostForm extends Component {
               <FieldGroup
                 id='author'
                 type='input'
+                vState={this.state.aError ? 'error' : null}
                 label='Author'
                 defaultValue={get(post, 'id') ? post.author : this.state.author}
                 onChange={this.handleAuthorChange}
