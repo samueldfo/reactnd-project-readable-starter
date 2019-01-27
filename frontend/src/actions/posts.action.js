@@ -23,9 +23,9 @@ function setPosts(posts) {
   };
 }
 
-export function fetchPostDetail(postId) {
+export function fetchPostDetail(id) {
   return async dispatch => {
-    let details = await ReadableAPI.fetchPostDetail(postId);
+    let details = await ReadableAPI.fetchPostDetail(id);
     dispatch(getPostDetail(details));
   }
 }
@@ -76,9 +76,9 @@ function editPostAction(post) {
   };
 }
 
-export function removePost(postId) {
+export function removePost(id) {
   return async dispatch => {
-    let post = await ReadableAPI.removePost(postId)
+    let post = await ReadableAPI.removePost(id)
     dispatch(removePostAction(post));
   }
 }
@@ -90,9 +90,9 @@ function removePostAction(post) {
   };
 }
 
-export function upVotePost(postId) {
+export function upVotePost(id) {
   return async dispatch => {
-    let post = await ReadableAPI.upVotePost(postId)
+    let post = await ReadableAPI.upVotePost(id)
     dispatch(upVotePostAction(post));
   }
 }
@@ -104,9 +104,9 @@ function upVotePostAction(post) {
   };
 }
 
-export function downVotePost(postId) {
+export function downVotePost(id) {
   return async dispatch => {
-    let post = await ReadableAPI.downVotePost(postId)
+    let post = await ReadableAPI.downVotePost(id)
     dispatch(downVotePostAction(post));
   }
 }

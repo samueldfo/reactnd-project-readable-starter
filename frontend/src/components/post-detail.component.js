@@ -9,7 +9,7 @@ import * as moment from 'moment';
 class PostDetail extends Component {
 
   componentDidMount() {
-    this.props.fetchPostDetail(this.props.match.params.postId)
+    this.props.fetchPostDetail(this.props.match.params.id)
   }
 
   render() {
@@ -85,7 +85,7 @@ function mapStateToProps({ post }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPostDetail: (postId) => dispatch(fetchPostDetail(postId)),
+    fetchPostDetail: (id) => dispatch(fetchPostDetail(id)),
   }
 }
 

@@ -21,8 +21,8 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchPostDetail(this.props.match.params.postId)
-    this.props.fetchComments(this.props.match.params.postId)
+    this.props.fetchPostDetail(this.props.match.params.id)
+    this.props.fetchComments(this.props.match.params.id)
   }
 
   handleShowCommentModal = (comment) => {
@@ -163,14 +163,14 @@ function mapStateToProps({ post, comments }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPostDetail: (postId) => dispatch(fetchPostDetail(postId)),
-    removePost: (postId) => dispatch(removePost(postId)),
-    fetchComments: (postId) => dispatch(fetchComments(postId)),
-    upVotePost: (commentId) => dispatch(upVotePost(commentId)),
-    downVotePost: (commentId) => dispatch(downVotePost(commentId)),
-    removeComment: (commentId) => dispatch(removeComment(commentId)),
-    upVoteComment: (commentId) => dispatch(upVoteComment(commentId)),
-    downVoteComment: (commentId) => dispatch(downVoteComment(commentId)),
+    fetchPostDetail: (id) => dispatch(fetchPostDetail(id)),
+    removePost: (id) => dispatch(removePost(id)),
+    fetchComments: (id) => dispatch(fetchComments(id)),
+    upVotePost: (id) => dispatch(upVotePost(id)),
+    downVotePost: (id) => dispatch(downVotePost(id)),
+    removeComment: (id) => dispatch(removeComment(id)),
+    upVoteComment: (id) => dispatch(upVoteComment(id)),
+    downVoteComment: (id) => dispatch(downVoteComment(id)),
   }
 }
 

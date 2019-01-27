@@ -9,9 +9,9 @@ export const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT'
 export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT'
 
 
-export function fetchComments(postId) {
+export function fetchComments(id) {
   return async dispatch => {
-    let comments = await ReadableAPI.fetchComments(postId);
+    let comments = await ReadableAPI.fetchComments(id);
     dispatch(getComments(comments));
   }
 }
@@ -62,9 +62,9 @@ function editCommentAction(comment) {
   };
 }
 
-export function removeComment(commentId) {
+export function removeComment(id) {
   return async dispatch => {
-    let comment = await ReadableAPI.removeComment(commentId)
+    let comment = await ReadableAPI.removeComment(id)
     dispatch(removeCommentAction(comment));
   }
 }
@@ -76,9 +76,9 @@ function removeCommentAction(comment) {
   };
 }
 
-export function upVoteComment(commentId) {
+export function upVoteComment(id) {
   return async dispatch => {
-    const comment = await ReadableAPI.upVoteComment(commentId)
+    const comment = await ReadableAPI.upVoteComment(id)
     dispatch(upVoteCommentAction(comment));
   }
 }
@@ -90,9 +90,9 @@ function upVoteCommentAction(comment) {
   };
 }
 
-export function downVoteComment(commentId) {
+export function downVoteComment(id) {
   return async dispatch => {
-    const comment = await ReadableAPI.downVoteComment(commentId)
+    const comment = await ReadableAPI.downVoteComment(id)
     dispatch(downVoteCommentAction(comment));
   }
 }

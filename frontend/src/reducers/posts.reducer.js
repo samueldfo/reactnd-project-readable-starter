@@ -23,6 +23,8 @@ export function posts(state = postsInitialState, action) {
         items: [...state.items, post]
       }
     case EDIT_POST:
+    case UP_VOTE_POST:
+    case DOWN_VOTE_POST:
       return {
         ...state,
         items: state.items.map(item => {

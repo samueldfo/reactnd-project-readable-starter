@@ -23,13 +23,13 @@ export async function fetchPosts() {
   return posts.json()
 }
 
-export async function fetchPostDetail(postId) {
-  let post = await fetch(API_URL + 'posts/' + postId, { headers })
+export async function fetchPostDetail(id) {
+  let post = await fetch(API_URL + 'posts/' + id, { headers })
   return post.json()
 }
 
-export async function fetchComments(postId) {
-  let comments = await fetch(`${API_URL}posts/${postId}/comments`, { headers })
+export async function fetchComments(id) {
+  let comments = await fetch(`${API_URL}posts/${id}/comments`, { headers })
   return comments.json()
 }
 
@@ -45,8 +45,8 @@ export async function addComment(comment) {
   return response.json()
 }
 
-export async function removeComment(commentId) {
-  let response = await fetch(`${API_URL}comments/${commentId}`, {
+export async function removeComment(id) {
+  let response = await fetch(`${API_URL}comments/${id}`, {
     method: 'DELETE',
     headers: {
       ...headers,
@@ -68,8 +68,8 @@ export async function editComment(comment) {
   return response.json()
 }
 
-export async function upVoteComment(commentId) {
-  let response = await fetch(`${API_URL}comments/${commentId}`, {
+export async function upVoteComment(id) {
+  let response = await fetch(`${API_URL}comments/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -80,8 +80,8 @@ export async function upVoteComment(commentId) {
   return response.json()
 }
 
-export async function downVoteComment(commentId) {
-  let response = await fetch(`${API_URL}comments/${commentId}`, {
+export async function downVoteComment(id) {
+  let response = await fetch(`${API_URL}comments/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -92,8 +92,8 @@ export async function downVoteComment(commentId) {
   return response.json()
 }
 
-export async function upVotePost(postId) {
-  let response = await fetch(`${API_URL}posts/${postId}`, {
+export async function upVotePost(id) {
+  let response = await fetch(`${API_URL}posts/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -104,8 +104,8 @@ export async function upVotePost(postId) {
   return response.json()
 }
 
-export async function downVotePost(postId) {
-  let response = await fetch(`${API_URL}posts/${postId}`, {
+export async function downVotePost(id) {
+  let response = await fetch(`${API_URL}posts/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -128,8 +128,8 @@ export async function addPost(post) {
   return response.json()
 }
 
-export async function removePost(postId) {
-  let response = await fetch(`${API_URL}posts/${postId}`, {
+export async function removePost(id) {
+  let response = await fetch(`${API_URL}posts/${id}`, {
     method: 'DELETE',
     headers: {
       ...headers,
