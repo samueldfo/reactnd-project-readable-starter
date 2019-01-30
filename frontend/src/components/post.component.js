@@ -10,7 +10,6 @@ import { fetchPostDetail, removePost } from '../actions/posts.action';
 import CommentForm from './comment-form.component';
 import PostForm from './post-form.component';
 import CommentList from './comment-list.component';
-import { removeComment, upVoteComment, downVoteComment } from '../actions/comments.action';
 import Error404 from './error-404.component';
 
 class Post extends Component {
@@ -34,18 +33,6 @@ class Post extends Component {
 
   handleCloseCommentModal = () => {
     this.setState({ showCommentModal: false });
-  }
-
-  handleUpVoteComment = (id) => {
-    this.props.upVoteComment(id)
-  }
-
-  handleDownVoteComment = (id) => {
-    this.props.downVoteComment(id)
-  }
-
-  handleRemoveComment = (id) => {
-    this.props.removeComment(id)
   }
 
   handleShowPostModal = () => {
@@ -133,9 +120,6 @@ class Post extends Component {
             <CommentList
               comment={comment}
               handleShow={this.handleShowCommentModal}
-              handleRemove={this.handleRemoveComment}
-              handleUpVote={this.handleUpVoteComment}
-              handleDownVote={this.handleDownVoteComment}
             />)}
           <CommentForm
             show={this.state.showCommentModal}
@@ -164,13 +148,10 @@ function mapStateToProps({ post, comments }) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchPostDetail: (id) => dispatch(fetchPostDetail(id)),
-    removePost: (id) => dispatch(removePost(id)),
-    fetchComments: (id) => dispatch(fetchComments(id)),
-    upVotePost: (id) => dispatch(upVotePost(id)),
-    downVotePost: (id) => dispatch(downVotePost(id)),
-    removeComment: (id) => dispatch(removeComment(id)),
-    upVoteComment: (id) => dispatch(upVoteComment(id)),
-    downVoteComment: (id) => dispatch(downVoteComment(id)),
+    removePost     : (id) => dispatch(removePost(id)),
+    fetchComments  : (id) => dispatch(fetchComments(id)),
+    upVotePost     : (id) => dispatch(upVotePost(id)),
+    downVotePost   : (id) => dispatch(downVotePost(id)),
   }
 }
 

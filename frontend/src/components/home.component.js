@@ -5,7 +5,7 @@ import { Button, ButtonGroup, DropdownButton, MenuItem, PageHeader } from 'react
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { fetchCategories } from '../actions/categories.action';
-import { fetchPosts, removePost, upVotePost, downVotePost } from '../actions/posts.action';
+import { fetchPosts } from '../actions/posts.action';
 import { POST_SORT } from '../utils/constants';
 import CategoryNav from './category-nav.component';
 import PostForm from './post-form.component';
@@ -31,18 +31,6 @@ class Home extends Component {
     this.setState({ showPostModal: true });
   }
 
-  handleRemovePost = (id) => {
-    this.props.removePost(id)
-  }
-
-  handleUpVote = (id) => {
-    this.props.upVotePost(id)
-  }
-
-  handleDownVote = (id) => {
-    this.props.downVotePost(id)
-  }
-
   handleEditPost = (post) => {
     this.setState({
       post: post,
@@ -55,6 +43,7 @@ class Home extends Component {
   }
 
   render() {
+
     let { categories, posts } = this.props
 
     switch (this.state.sortBy) {
@@ -97,10 +86,8 @@ class Home extends Component {
             </div>
             <PostList
               posts={this.props.match.params.categoryPath ? filter(posts, post => post.category === this.props.match.params.categoryPath) : posts}
-              handleRemove={this.handleRemovePost}
               handleEdit={this.handleEditPost}
-              handleUpVote={this.handleUpVote}
-              handleDownVote={this.handleDownVote} />
+            />
           </div >)}
         <PostForm
           show={this.state.showPostModal}
@@ -123,9 +110,6 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: () => dispatch(fetchCategories()),
     fetchPosts: () => dispatch(fetchPosts()),
-    removePost: (id) => dispatch(removePost(id)),
-    upVotePost: (id) => dispatch(upVotePost(id)),
-    downVotePost: (id) => dispatch(downVotePost(id)),
   }
 }
 
